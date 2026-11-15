@@ -1349,3 +1349,20 @@ html[dir="rtl"] .footer-grid h3 {
   color: var(--rose-deep);
   font-size: 0.85rem;
 }
+
+.google-signin-disabled {
+  min-height: 2.75rem;
+  padding-inline: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-muted);
+  background: var(--surface-raised);
+  cursor: not-allowed;
+}
+.google-signin-hint {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.75rem;
+  direction: ltr;
+  text-align: center;
+}

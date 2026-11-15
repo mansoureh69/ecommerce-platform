@@ -36,7 +36,19 @@ export function GoogleSignIn({
   const router = useRouter();
   const google = useGoogleLogin();
   const slot = useRef<HTMLDivElement>(null);
-  if (!clientId) return null;
+  if (!clientId) {
+    // Production hides the option until it is configured; development shows why it is missing.
+    if (process.env.NODE_ENV === "production") return null;
+    return (
+      <div className="google-signin">
+        <p className="google-signin-or" aria-hidden="true">{copy.or}</p>
+        <button type="button" className="google-signin-disabled" disabled>
+          {mode === "login" ? "ورود با گوگل" : "ثبت‌نام با گوگل"}
+        </button>
+        <p className="google-signin-hint">Set NEXT_PUBLIC_GOOGLE_CLIENT_ID (and GOOGLE_CLIENT_ID for the API) to enable Google sign-in.</p>
+      </div>
+    );
+  }
 
   function render() {
     const api = window.google?.accounts.id;

@@ -27,9 +27,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function LocaleLayout({ children, params }: { children: ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  const copy = await messages(locale);
   return (
-    <html lang={locale} dir={direction(locale)} className={`${bodyFont.variable} ${persianFont.variable} ${displayFont.variable}`}>
+    <html lang={locale} dir={direction} className={`${bodyFont.variable} ${persianFont.variable} ${displayFont.variable}`}>
       <body>
         <Providers>
           <div className="sketch-reference"><AnnounceBar /><SiteHeader locale={locale} /></div>
