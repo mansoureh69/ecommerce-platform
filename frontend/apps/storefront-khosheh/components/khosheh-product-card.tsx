@@ -24,6 +24,7 @@ export function KhoshehProductCard({
     <article className="khosheh-product">
       {primaryImage ? (
         <div className="product-image-wrap">
+          <Link className="product-add" href={`/${locale}/products/${product.id}`} aria-label={`${viewLabel}: ${product.name}`}>+</Link>
           <Image
             src={primaryImage.url}
             alt={primaryImage.altText || product.name}

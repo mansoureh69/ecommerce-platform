@@ -63,10 +63,10 @@ export function KhoshehHeader({
         <Link href={`/${locale}/products`} onClick={() => setOpen(false)}>
           {copy.nav.shop}
         </Link>
-        <Link href={`/${locale}/products`} onClick={() => setOpen(false)}>
+        <Link href={`/${locale}#occasions`} onClick={() => setOpen(false)}>
           {copy.nav.gifts}
         </Link>
-        <Link href={`/${locale}#story`} onClick={() => setOpen(false)}>
+        <Link href={`/${locale}#craft`} onClick={() => setOpen(false)}>
           {copy.nav.story}
         </Link>
       </nav>

@@ -22,7 +22,7 @@ export default async function LoginPage({
     <main className="auth-shell">
       <section className="auth-panel">
         <h1>{copy.auth.loginTitle}</h1>
-        <AuthForm mode="login" copy={copy.auth} redirectTo={redirectTo} />
+        <AuthForm mode="login" locale={locale} copy={copy.auth} redirectTo={redirectTo} />
       </section>
     </main>
   );

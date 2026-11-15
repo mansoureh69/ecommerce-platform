@@ -197,6 +197,7 @@ export function createCommerceApi(options: ApiClientOptions): CommerceApi {
 export interface SessionClient {
   login(credentials: Credentials): Promise<Session>;
   register(credentials: Credentials): Promise<Session>;
+  google(credential: string): Promise<Session>;
   logout(): Promise<void>;
   session(): Promise<Session>;
 }
@@ -222,6 +223,11 @@ export function createSessionClient(baseUrl = "/api/auth"): SessionClient {
       sessionRequest<Session>(`${baseUrl}/register`, {
         method: "POST",
         body: JSON.stringify(credentials),
+      }),
+    google: (credential) =>
+      sessionRequest<Session>(`${baseUrl}/google`, {
+        method: "POST",
+        body: JSON.stringify({ credential }),
       }),
     logout: () => sessionRequest<void>(`${baseUrl}/logout`, { method: "POST" }),
     session: () => sessionRequest<Session>(`${baseUrl}/session`),

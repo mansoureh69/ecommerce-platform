@@ -23,6 +23,7 @@ services:
     environment: &app-environment
       ConnectionStrings__Database: "Host=postgres;Database=ecommerce;Username=ecommerce;Password=${POSTGRES_PASSWORD};GSS Encryption Mode=Disable"
       Jwt__Secret: ${JWT_SECRET:?Set JWT_SECRET to at least 32 random bytes}
+      Google__ClientId: ${GOOGLE_CLIENT_ID:-}
       ASPNETCORE_ENVIRONMENT: Production
       Catalog__Media__Provider: Local
       Catalog__Media__LocalRoot: /app/media
@@ -35,7 +36,7 @@ services:
       dockerfile: docker/Dockerfile
     environment: *app-environment
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:${API_PORT:-8080}:8080"
     volumes:
       - media-data:/app/media
     depends_on:

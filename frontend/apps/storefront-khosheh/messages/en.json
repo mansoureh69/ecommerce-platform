@@ -32,7 +32,9 @@
     "registerAction": "Create account",
     "pending": "Please wait…",
     "emailError": "Enter a valid email address.",
-    "passwordError": "Use at least 12 characters."
+    "passwordError": "Use at least 12 characters.",
+    "or": "or",
+    "googleError": "Google sign-in did not complete. Try again."
   },
   "product": {
     "loading": "Preparing the arrangement…",
@@ -163,5 +165,146 @@
     "en": "English",
     "fa": "فارسی",
     "ar": "العربية"
+  },
+  "landing": {
+    "announce": "Fast, protected delivery in Ahvaz",
+    "hero": {
+      "slides": [
+        {
+          "badge": "Fresh from the Khosheh studio",
+          "title": "The scent and colour of the south",
+          "highlight": "Hand-wrapped in Ahvaz",
+          "copy": "Fresh blooms in kraft paper and careful packing, so they reach you whole and glowing.",
+          "alt": "A floral arrangement from the Khosheh studio in Ahvaz"
+        },
+        {
+          "badge": "Nature-friendly wrapping",
+          "title": "The Khosheh signature bouquet",
+          "highlight": "In kraft paper and natural jute",
+          "copy": "Flowers that breathe freely, composed from texture, colour and fragrance just for you.",
+          "alt": "A hand-wrapped Khosheh bouquet"
+        }
+      ],
+      "cta": "See today's flowers",
+      "ctaDelivery": "2-hour delivery in Ahvaz",
+      "ready": "Ready to dispatch",
+      "protected": "Protected delivery",
+      "previous": "Previous slide",
+      "next": "Next slide",
+      "goTo": "Show slide"
+    },
+    "trust": [
+      {
+        "title": "Protected delivery",
+        "text": "Shielded from the Khuzestan heat"
+      },
+      {
+        "title": "Under 2 hours",
+        "text": "Kianpars, Zeitoun, Vahabi and across Ahvaz"
+      },
+      {
+        "title": "Jute and kraft wrapping",
+        "text": "The natural hand-wrapped craft of the studio"
+      },
+      {
+        "title": "7-day freshness promise",
+        "text": "With a temporary water and feed pack"
+      }
+    ],
+    "featured": {
+      "eyebrow": "New from the studio",
+      "title": "Rainbow and fiery bouquets of the south",
+      "intro": "Wrapped by hand in organic kraft and woven ribbon.",
+      "previous": "Previous",
+      "next": "Next",
+      "viewAll": "All flowers"
+    },
+    "craft": {
+      "eyebrow": "The Khosheh wrap",
+      "title": "Beauty lasts when it is made with care.",
+      "body": "Every stem is chosen for colour, texture and freshness. We then pack it in kraft paper, natural jute and hydrating care so the flowers can breathe on the way.",
+      "caption": "From the Khosheh workshop to your home",
+      "alt": "Hand-selecting and arranging flowers in the Khosheh studio",
+      "cards": [
+        {
+          "title": "In-season flowers",
+          "text": "Chosen from the freshest daily delivery"
+        },
+        {
+          "title": "Smart packaging",
+          "text": "So they arrive safely"
+        }
+      ]
+    },
+    "occasions": {
+      "eyebrow": "For every occasion",
+      "title": "Flowers, the language of your big moments",
+      "items": [
+        {
+          "title": "Hydrated flower box",
+          "text": "Lasts longer in the Ahvaz heat"
+        },
+        {
+          "title": "Jute wrap",
+          "text": "Kraft paper and natural jute, the Khosheh signature"
+        },
+        {
+          "title": "Wedding florals",
+          "text": "Décor for private, lasting celebrations"
+        },
+        {
+          "title": "Weekly flower plan",
+          "text": "Fresh blooms for home and office"
+        }
+      ]
+    },
+    "delivery": {
+      "eyebrow": "Khuzestan's fastest flower delivery",
+      "title": "Express delivery in under 2 hours in Ahvaz",
+      "intro": "Your order leaves the Kianpars studio directly in equipped, protected vehicles.",
+      "zones": [
+        {
+          "name": "Kianpars",
+          "time": "45 to 60 minutes"
+        },
+        {
+          "name": "Zeitoun Karmandi",
+          "time": "Under 90 minutes"
+        },
+        {
+          "name": "Vahabi Street",
+          "time": "Under 90 minutes"
+        },
+        {
+          "name": "Padadshahr",
+          "time": "Under 90 minutes"
+        },
+        {
+          "name": "Amaniyeh and Golestan",
+          "time": "Under 90 minutes"
+        },
+        {
+          "name": "Kourosh and Zeitoun",
+          "time": "Under 2 hours"
+        }
+      ]
+    },
+    "social": {
+      "title": "Life with flowers in Ahvaz",
+      "alt": "A look at Khosheh floral work"
+    },
+    "contact": {
+      "title": "Contact the studio",
+      "address": "Kianpars, Ahvaz",
+      "hours": "Every day, 8:00 to 22:30"
+    },
+    "services": {
+      "title": "Services",
+      "links": [
+        "Daily bouquets",
+        "Event florals",
+        "Express delivery in Ahvaz"
+      ]
+    }
   }
 }

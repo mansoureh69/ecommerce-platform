@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { Playfair_Display, Plus_Jakarta_Sans, Vazirmatn } from "next/font/google";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
+import { AnnounceBar } from "../../components/design/announce-bar";
+import { SiteFooter } from "../../components/design/site-footer";
+import { SiteHeader } from "../../components/design/site-header";
 import { KhoshehFooter } from "../../components/khosheh-footer";
 import { KhoshehHeader } from "../../components/khosheh-header";
 import { direction, isLocale, locales, messages } from "../../i18n/config";
@@ -29,7 +32,24 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   const copy = await messages(locale);
   return (
     <html lang={locale} dir={direction(locale)} className={`${bodyFont.variable} ${persianFont.variable} ${displayFont.variable}`}>
-      <body><Providers><KhoshehHeader locale={locale} copy={copy} />{children}<KhoshehFooter locale={locale} copy={copy} /></Providers></body>
+      <body>
+        <Providers>
+          {locale === "fa" ? (
+            <>
+              <div className="sketch-reference"><AnnounceBar /><SiteHeader locale={locale} /></div>
+              {children}
+              <div className="sketch-reference"><SiteFooter locale={locale} /></div>
+            </>
+          ) : (
+            <>
+              <p className="announce">{copy.landing.announce}</p>
+              <KhoshehHeader locale={locale} copy={copy} />
+              {children}
+              <KhoshehFooter locale={locale} copy={copy} />
+            </>
+          )}
+        </Providers>
+      </body>
     </html>
   );
 }

@@ -9,6 +9,8 @@ public static class Registration
     {
         services.AddModuleContext<IdentityDbContext>("identity");
         services.AddScoped<IAccounts, Accounts>();
+        services.AddOptions<GoogleSettings>().BindConfiguration("Google");
+        services.AddSingleton<IGoogleIdentity, GoogleIdentityValidator>();
         return services;
     }
 }

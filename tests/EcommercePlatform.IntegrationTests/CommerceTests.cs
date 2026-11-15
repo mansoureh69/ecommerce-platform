@@ -12,6 +12,7 @@ using EcommercePlatform.Modules.Payments.Application;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
@@ -51,6 +52,7 @@ public sealed class CommerceFixture : IAsyncLifetime
             b.UseSetting("Jwt:Secret", Convert.ToHexString(System.Security.Cryptography.RandomNumberGenerator.GetBytes(32)));
             b.UseSetting("Catalog:Media:Provider", "Local");
             b.UseSetting("Catalog:Media:LocalRoot", mediaRoot);
+            b.ConfigureTestServices(services => services.AddSingleton<EcommercePlatform.Modules.Identity.Application.IGoogleIdentity, FakeGoogleIdentity>());
         });
         Anonymous = factory.CreateClient();
         await using (var scope = Services.CreateAsyncScope())
@@ -94,7 +96,7 @@ public sealed class CommerceFixture : IAsyncLifetime
         return Client((await response.Content.ReadFromJsonAsync<AuthResult>())!.Token!);
     }
 
-    private HttpClient Client(string token)
+    public HttpClient Client(string token)
     {
         var client = factory.CreateClient();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);

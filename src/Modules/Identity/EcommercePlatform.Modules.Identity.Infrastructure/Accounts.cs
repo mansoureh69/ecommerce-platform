@@ -53,6 +53,34 @@ internal sealed class Accounts(UserManager<ApplicationUser> users, IOptions<JwtS
         return await Token(user);
     }
 
+    // A Google account signs in to the account linked to its subject id, or creates a new password-less customer.
+    // It is never linked to a pre-existing account by email alone: registration does not verify email ownership,
+    // so linking would let whoever pre-registered an address keep access once its real owner signs in with Google.
+    public async Task<AuthResult> ExternalLogin(string provider, string subject, string email, CancellationToken ct)
+    {
+        ct.ThrowIfCancellationRequested();
+        var address = new AccountEmail(email);
+        var user = await users.FindByLoginAsync(provider, subject);
+        if (user is null)
+        {
+            if (await users.FindByEmailAsync(address.Value) is not null)
+                return new(false, null, null, "An account with this email already exists. Sign in with your password.");
+            user = new ApplicationUser
+            {
+                Id = Guid.NewGuid(),
+                Email = address.Value,
+                UserName = address.Value,
+                EmailConfirmed = true,
+                LockoutEnabled = true
+            };
+            // Throwing rolls back the surrounding transaction, so a half-created account is never left behind.
+            if (!(await users.CreateAsync(user)).Succeeded || !(await users.AddLoginAsync(user, new UserLoginInfo(provider, subject, provider))).Succeeded)
+                throw new InvalidOperationException("Could not create the external account.");
+        }
+
+        return await users.IsLockedOutAsync(user) ? Failed() : await Token(user);
+    }
+
     private static AuthResult Failed() => new(false, null, null, "Invalid credentials or account locked.");
     private async Task<AuthResult> Token(ApplicationUser user)
     {

@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <PackageReference Include="Google.Apis.Auth" Version="1.78.0" />
     <ProjectReference Include="../../../BuildingBlocks/EcommercePlatform.BuildingBlocks.Infrastructure/EcommercePlatform.BuildingBlocks.Infrastructure.csproj" />
     <ProjectReference Include="../EcommercePlatform.Modules.Identity.Application/EcommercePlatform.Modules.Identity.Application.csproj" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10" PrivateAssets="all" />

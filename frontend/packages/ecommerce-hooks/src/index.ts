@@ -217,6 +217,15 @@ export function useRegister() {
   });
 }
 
+export function useGoogleLogin() {
+  const { session } = useEcommerceClients();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (credential: string) => session.google(credential),
+    onSuccess: (value) => queryClient.setQueryData(["session"], value),
+  });
+}
+
 export function useLogout() {
   const { session } = useEcommerceClients();
   const queryClient = useQueryClient();

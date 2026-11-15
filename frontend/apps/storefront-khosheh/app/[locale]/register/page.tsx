@@ -16,6 +16,7 @@ export default async function RegisterPage({
         <h1>{copy.auth.registerTitle}</h1>
         <AuthForm
           mode="register"
+          locale={locale}
           copy={copy.auth}
           redirectTo={`/${locale}/account`}
         />

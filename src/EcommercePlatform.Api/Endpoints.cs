@@ -24,6 +24,11 @@ public static class Endpoints
             var x = await s.Send(r, ct);
             return x.Success ? Results.Ok(x) : Results.Problem(statusCode: 401, title: x.Error);
         }).RequireRateLimiting("auth");
+        api.MapPost("/auth/google", async (GoogleLogin r, ISender s, CancellationToken ct) =>
+        {
+            var x = await s.Send(r, ct);
+            return x.Success ? Results.Ok(x) : Results.Problem(statusCode: 401, title: x.Error);
+        }).RequireRateLimiting("auth");
         api.MapGet("/categories", (ISender s, CancellationToken ct) => s.Send(new GetCategories(), ct));
         api.MapGet("/products", (int? page, int? size, Guid? categoryId, ISender s, CancellationToken ct) => s.Send(new GetProducts(page ?? 1, size ?? 20, categoryId), ct));
         api.MapGet("/products/{id:guid}", (Guid id, ISender s, CancellationToken ct) => s.Send(new GetProduct(id), ct));

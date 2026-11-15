@@ -6,6 +6,7 @@ import { Button, Field, Input } from "@ecommerce/ui-primitives";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { GoogleSignIn } from "./google-sign-in";
 
 interface AuthMessages {
   email: string;
@@ -15,14 +16,18 @@ interface AuthMessages {
   pending: string;
   emailError: string;
   passwordError: string;
+  or: string;
+  googleError: string;
 }
 
 export function AuthForm({
   mode,
+  locale,
   copy,
   redirectTo,
 }: {
   mode: "login" | "register";
+  locale: string;
   copy: AuthMessages;
   redirectTo: string;
 }) {
@@ -47,42 +52,50 @@ export function AuthForm({
   }
 
   return (
-    <form onSubmit={form.handleSubmit(submit)} noValidate>
-      <Field label={copy.email} error={form.formState.errors.email?.message}>
-        {(id, describedBy) => (
-          <Input
-            id={id}
-            type="email"
-            autoComplete="username"
-            aria-describedby={describedBy}
-            {...form.register("email")}
-          />
-        )}
-      </Field>
-      <Field
-        label={copy.password}
-        error={form.formState.errors.password?.message}
-      >
-        {(id, describedBy) => (
-          <Input
-            id={id}
-            type="password"
-            autoComplete={
-              mode === "login" ? "current-password" : "new-password"
-            }
-            aria-describedby={describedBy}
-            {...form.register("password")}
-          />
-        )}
-      </Field>
-      {mutation.error ? <p role="alert">{mutation.error.message}</p> : null}
-      <Button type="submit" disabled={mutation.isPending}>
-        {mutation.isPending
-          ? copy.pending
-          : mode === "login"
-            ? copy.loginAction
-            : copy.registerAction}
-      </Button>
-    </form>
+    <>
+      <form onSubmit={form.handleSubmit(submit)} noValidate>
+        <Field label={copy.email} error={form.formState.errors.email?.message}>
+          {(id, describedBy) => (
+            <Input
+              id={id}
+              type="email"
+              autoComplete="username"
+              aria-describedby={describedBy}
+              {...form.register("email")}
+            />
+          )}
+        </Field>
+        <Field
+          label={copy.password}
+          error={form.formState.errors.password?.message}
+        >
+          {(id, describedBy) => (
+            <Input
+              id={id}
+              type="password"
+              autoComplete={
+                mode === "login" ? "current-password" : "new-password"
+              }
+              aria-describedby={describedBy}
+              {...form.register("password")}
+            />
+          )}
+        </Field>
+        {mutation.error ? <p role="alert">{mutation.error.message}</p> : null}
+        <Button type="submit" disabled={mutation.isPending}>
+          {mutation.isPending
+            ? copy.pending
+            : mode === "login"
+              ? copy.loginAction
+              : copy.registerAction}
+        </Button>
+      </form>
+      <GoogleSignIn
+        mode={mode}
+        locale={locale}
+        redirectTo={redirectTo}
+        copy={copy}
+      />
+    </>
   );
 }

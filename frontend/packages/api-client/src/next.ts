@@ -48,14 +48,16 @@ function decodeRoles(token: string): string[] {
 
 async function authenticate(
   request: NextRequest,
-  action: "login" | "register",
+  action: "login" | "register" | "google",
   options: SessionHandlerOptions,
 ): Promise<NextResponse> {
   if (!csrfIsValid(request)) {
     return NextResponse.json({ title: "Invalid request origin", status: 403 }, { status: 403 });
   }
 
-  const credentials = (await request.json()) as Credentials;
+  const input = (await request.json()) as Credentials & { credential?: string };
+  // Google's ID token goes to the backend, which verifies it; the browser never sees the app token.
+  const credentials = action === "google" ? { idToken: String(input.credential ?? "") } : input;
   const backendResponse = await fetch(backendUrl(options, `/api/auth/${action}`), {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
@@ -93,6 +95,10 @@ export function loginHandler(request: NextRequest, options: SessionHandlerOption
 
 export function registerHandler(request: NextRequest, options: SessionHandlerOptions) {
   return authenticate(request, "register", options);
+}
+
+export function googleHandler(request: NextRequest, options: SessionHandlerOptions) {
+  return authenticate(request, "google", options);
 }
 
 export function logoutHandler(request: NextRequest, options: SessionHandlerOptions): NextResponse {

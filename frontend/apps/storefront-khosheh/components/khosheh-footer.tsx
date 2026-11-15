@@ -13,6 +13,10 @@ interface FooterCopy {
     register: string;
   };
   footer: { tagline: string; shop: string; account: string; copyright: string };
+  landing: {
+    contact: { title: string; address: string; hours: string };
+    services: { title: string; links: string[] };
+  };
 }
 
 export function KhoshehFooter({
@@ -33,10 +37,21 @@ export function KhoshehFooter({
           </div>
         </div>
         <div>
+          <h3>{copy.landing.contact.title}</h3>
+          <p>{copy.landing.contact.address}</p>
+          <p>{copy.landing.contact.hours}</p>
+        </div>
+        <div>
+          <h3>{copy.landing.services.title}</h3>
+          <Link href={`/${locale}/products`}>{copy.landing.services.links[0]}</Link>
+          <Link href={`/${locale}#occasions`}>{copy.landing.services.links[1]}</Link>
+          <Link href={`/${locale}#delivery`}>{copy.landing.services.links[2]}</Link>
+        </div>
+        <div>
           <h3>{copy.footer.shop}</h3>
           <Link href={`/${locale}/products`}>{copy.nav.shop}</Link>
           <Link href={`/${locale}/products`}>{copy.nav.gifts}</Link>
-          <Link href={`/${locale}#story`}>{copy.nav.story}</Link>
+          <Link href={`/${locale}#craft`}>{copy.nav.story}</Link>
         </div>
         <div>
           <h3>{copy.footer.account}</h3>
