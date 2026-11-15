@@ -2,7 +2,7 @@
 
 .NET 10 modular-monolith backend with PostgreSQL, EF Core 10, MediatR, FluentValidation, ASP.NET Core Identity and JWT. Seven implemented modules: Identity, Catalog, Inventory, Pricing, Cart, Orders and Payments. No frontend, Redis or message broker is required.
 
-The Flower Shop source remains unchanged. See [the implementation audit](docs/migration/source-repository-audit.md), [architecture](docs/architecture/overview.md), [Catalog administration](docs/admin/catalog-management.md), [product media](docs/admin/product-media.md), [storage configuration](docs/admin/storage-configuration.md) and [decisions](docs/adr/0001-modular-monolith.md).
+The Flower Shop source remains unchanged. For full backend and frontend startup instructions, see [Start EcommercePlatform locally](docs/getting-started.md). Additional references include [the implementation audit](docs/migration/source-repository-audit.md), [architecture](docs/architecture/overview.md), [Catalog administration](docs/admin/catalog-management.md), [product media](docs/admin/product-media.md), [storage configuration](docs/admin/storage-configuration.md) and [decisions](docs/adr/0001-modular-monolith.md).
 
 ## Run on Windows
 

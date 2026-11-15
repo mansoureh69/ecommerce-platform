@@ -1,12 +1,12 @@
-export const locales = ["en", "fa", "ar"] as const;
+export const locales = ["fa"] as const;
 export type Locale = (typeof locales)[number];
 
 export function isLocale(value: string): value is Locale {
   return locales.includes(value as Locale);
 }
 
-export function direction(locale: Locale): "ltr" | "rtl" {
-  return locale === "en" ? "ltr" : "rtl";
+export function direction(_locale: Locale): "ltr" | "rtl" {
+  return "rtl";
 }
 
 export async function messages(locale: Locale) {

@@ -12,11 +12,6 @@ const links = [
   ["تاج گل تبریک و تسلیت", "#occasions"],
 ] as const;
 
-const languages = [
-  ["en", "English"],
-  ["ar", "العربية"],
-] as const;
-
 export function SiteFooter({ locale }: { locale: string }) {
   return (
     <footer className="w-full bg-surface-alabaster text-ink-primary pt-16 pb-12 border-t border-craft-burlap/30">
@@ -61,14 +56,11 @@ export function SiteFooter({ locale }: { locale: string }) {
           </ul>
         </div>
         <div className="space-y-3">
-          <h4 className="font-black text-base text-forest-deep">حساب کاربری و زبان</h4>
+          <h4 className="font-black text-base text-forest-deep">حساب کاربری</h4>
           <ul className="space-y-2 text-xs sm:text-sm text-ink-soft">
             <li><Link className="hover:text-coral-vibrant transition-colors" href={`/${locale}/login`}>ورود</Link></li>
             <li><Link className="hover:text-coral-vibrant transition-colors" href={`/${locale}/register`}>ساخت حساب</Link></li>
             <li><Link className="hover:text-coral-vibrant transition-colors" href={`/${locale}/cart`}>سبد خرید</Link></li>
-            {languages.map(([code, label]) => (
-              <li key={code}><Link className="hover:text-coral-vibrant transition-colors" href={`/${code}`} lang={code}>{label}</Link></li>
-            ))}
           </ul>
         </div>
       </div>

@@ -6,8 +6,6 @@ import type { ReactNode } from "react";
 import { AnnounceBar } from "../../components/design/announce-bar";
 import { SiteFooter } from "../../components/design/site-footer";
 import { SiteHeader } from "../../components/design/site-header";
-import { KhoshehFooter } from "../../components/khosheh-footer";
-import { KhoshehHeader } from "../../components/khosheh-header";
 import { direction, isLocale, locales, messages } from "../../i18n/config";
 import { Providers } from "../providers";
 
@@ -34,20 +32,9 @@ export default async function LocaleLayout({ children, params }: { children: Rea
     <html lang={locale} dir={direction(locale)} className={`${bodyFont.variable} ${persianFont.variable} ${displayFont.variable}`}>
       <body>
         <Providers>
-          {locale === "fa" ? (
-            <>
-              <div className="sketch-reference"><AnnounceBar /><SiteHeader locale={locale} /></div>
-              {children}
-              <div className="sketch-reference"><SiteFooter locale={locale} /></div>
-            </>
-          ) : (
-            <>
-              <p className="announce">{copy.landing.announce}</p>
-              <KhoshehHeader locale={locale} copy={copy} />
-              {children}
-              <KhoshehFooter locale={locale} copy={copy} />
-            </>
-          )}
+          <div className="sketch-reference"><AnnounceBar /><SiteHeader locale={locale} /></div>
+          {children}
+          <div className="sketch-reference"><SiteFooter locale={locale} /></div>
         </Providers>
       </body>
     </html>
