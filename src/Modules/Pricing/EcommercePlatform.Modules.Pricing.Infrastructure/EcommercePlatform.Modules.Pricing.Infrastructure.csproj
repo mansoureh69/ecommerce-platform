@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../../../BuildingBlocks/EcommercePlatform.BuildingBlocks.Infrastructure/EcommercePlatform.BuildingBlocks.Infrastructure.csproj" />
+    <ProjectReference Include="../EcommercePlatform.Modules.Pricing.Application/EcommercePlatform.Modules.Pricing.Application.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10" PrivateAssets="all" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+</Project>
