@@ -1,3 +1,4 @@
+using EcommercePlatform.BuildingBlocks.Application;
 using EcommercePlatform.BuildingBlocks.Infrastructure;
 using EcommercePlatform.Modules.Orders.Application;
 using EcommercePlatform.Modules.Orders.Domain;
@@ -37,4 +38,13 @@ internal sealed class OrderStore(OrdersDbContext db) : IOrderStore
     public Task<Order?> Find(Guid id, CancellationToken ct) => db.Orders.Include(x => x.Lines).SingleOrDefaultAsync(x => x.Id == id, ct);
     public Task<Order?> FindCheckout(Guid customerId, Guid key, CancellationToken ct) => db.Orders.Include(x => x.Lines).SingleOrDefaultAsync(x => x.CustomerId == customerId && x.CheckoutKey == key, ct);
     public void Add(Order order) => db.Orders.Add(order);
+    public async Task<Page<OrderDto>> List(OrderStatus? status, int page, int size, CancellationToken ct)
+    {
+        var q = db.Orders.AsNoTracking().AsQueryable();
+        if (status is not null)
+            q = q.Where(x => x.Status == status);
+        var total = await q.CountAsync(ct);
+        var orders = await q.OrderByDescending(x => EF.Property<DateTimeOffset>(x, "CreatedAtUtc")).ThenBy(x => x.Id).Skip((page - 1) * size).Take(size).Include(x => x.Lines).ToListAsync(ct);
+        return new(orders.Select(OrderMapping.Dto).ToArray(), page, size, total);
+    }
 }

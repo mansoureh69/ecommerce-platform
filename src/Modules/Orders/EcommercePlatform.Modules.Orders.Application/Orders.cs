@@ -17,6 +17,9 @@ public sealed record Checkout(Guid IdempotencyKey, Guid CartVersion, AddressInpu
 public sealed record GetOrder(Guid OrderId) : IRequest<OrderDto>;
 public sealed record CancelOrder(Guid OrderId) : ICommand<OrderDto>;
 public sealed record FulfillOrder(Guid OrderId, bool Delivered) : ICommand<OrderDto>;
+public sealed record AdminListOrders(int Page = 1, int Size = 20, string? Status = null) : IRequest<Page<OrderDto>>;
+public sealed record AdminGetOrder(Guid OrderId) : IRequest<OrderDto>;
+public sealed record AdminCancelOrder(Guid OrderId) : ICommand<OrderDto>;
 public sealed record OrderLineDto(Guid ProductId, string Name, Money UnitPrice, int Quantity);
 public sealed record OrderDto(Guid Id, Guid CustomerId, string Status, Money Total, IReadOnlyList<OrderLineDto> Lines);
 public interface IOrderStore
@@ -24,6 +27,7 @@ public interface IOrderStore
     Task<Order?> Find(Guid id, CancellationToken ct);
     Task<Order?> FindCheckout(Guid customerId, Guid key, CancellationToken ct);
     void Add(Order order);
+    Task<Page<OrderDto>> List(OrderStatus? status, int page, int size, CancellationToken ct);
 }
 
 public interface IOrders
@@ -50,6 +54,33 @@ public sealed class OrdersService(IOrderStore store) : IOrders
     }
 
     public async Task Refund(Guid id, CancellationToken ct) => (await store.Find(id, ct) ?? throw new KeyNotFoundException()).Refund();
+}
+
+public sealed class AdminListOrdersValidator : AbstractValidator<AdminListOrders>
+{
+    public AdminListOrdersValidator()
+    {
+        RuleFor(x => x.Page).InclusiveBetween(1, 100000);
+        RuleFor(x => x.Size).InclusiveBetween(1, 100);
+        RuleFor(x => x.Status).Must(x => Enum.TryParse<OrderStatus>(x, true, out _)).When(x => x.Status is not null).WithMessage("Unsupported order status.");
+    }
+}
+
+// Administrators act on any customer's order, unlike the ownership-checked customer handlers.
+public sealed class AdminOrderHandlers(IOrderStore store) : IRequestHandler<AdminListOrders, Page<OrderDto>>, IRequestHandler<AdminGetOrder, OrderDto>, IRequestHandler<AdminCancelOrder, OrderDto>
+{
+    public Task<Page<OrderDto>> Handle(AdminListOrders r, CancellationToken ct) =>
+        store.List(r.Status is null ? null : Enum.Parse<OrderStatus>(r.Status, true), r.Page, r.Size, ct);
+
+    public async Task<OrderDto> Handle(AdminGetOrder r, CancellationToken ct) => OrderMapping.Dto(await store.Find(r.OrderId, ct) ?? throw new KeyNotFoundException());
+
+    public async Task<OrderDto> Handle(AdminCancelOrder r, CancellationToken ct)
+    {
+        var o = await store.Find(r.OrderId, ct) ?? throw new KeyNotFoundException();
+        if (o.Status != OrderStatus.Cancelled)
+            o.Cancel();
+        return OrderMapping.Dto(o);
+    }
 }
 
 public sealed class CheckoutValidator : AbstractValidator<Checkout>

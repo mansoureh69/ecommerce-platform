@@ -95,6 +95,13 @@ public static class Endpoints
             await s.Send(new DeleteVariant(id, variantId), ct);
             return Results.NoContent();
         });
+        admin.MapGet("/orders", (int? page, int? size, string? status, ISender s, CancellationToken ct) => s.Send(new AdminListOrders(page ?? 1, size ?? 20, status), ct));
+        admin.MapGet("/orders/{id:guid}", (Guid id, ISender s, CancellationToken ct) => s.Send(new AdminGetOrder(id), ct));
+        admin.MapPost("/orders/{id:guid}/cancel", (Guid id, ISender s, CancellationToken ct) => s.Send(new AdminCancelOrder(id), ct));
+        admin.MapGet("/payments", (int? page, int? size, ISender s, CancellationToken ct) => s.Send(new AdminListPayments(page ?? 1, size ?? 20), ct));
+        admin.MapGet("/payments/{orderId:guid}", (Guid orderId, ISender s, CancellationToken ct) => s.Send(new AdminGetPayment(orderId), ct));
+        admin.MapGet("/inventory", (int? page, int? size, ISender s, CancellationToken ct) => s.Send(new AdminListStock(page ?? 1, size ?? 20), ct));
+        admin.MapGet("/inventory/{productId:guid}", (Guid productId, ISender s, CancellationToken ct) => s.Send(new AdminGetStock(productId), ct));
         admin.MapGet("/products/{id:guid}/images", (Guid id, ISender s, CancellationToken ct) => s.Send(new GetImages(id), ct));
         admin.MapPost("/products/{id:guid}/images", async (Guid id, HttpRequest request, ISender s, CancellationToken ct) =>
         {

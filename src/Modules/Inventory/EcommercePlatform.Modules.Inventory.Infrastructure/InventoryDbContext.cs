@@ -1,3 +1,4 @@
+using EcommercePlatform.BuildingBlocks.Application;
 using EcommercePlatform.BuildingBlocks.Infrastructure;
 using EcommercePlatform.Modules.Inventory.Application;
 using EcommercePlatform.Modules.Inventory.Domain;
@@ -27,4 +28,10 @@ internal sealed class InventoryStore(InventoryDbContext db) : IInventoryStore
 {
     public Task<Stock?> Find(Guid id, CancellationToken ct) => db.Stocks.Include(x => x.Reservations).SingleOrDefaultAsync(x => x.ProductId == id, ct);
     public void Add(Stock entity) => db.Stocks.Add(entity);
+    public async Task<Page<StockDto>> List(int page, int size, CancellationToken ct)
+    {
+        var total = await db.Stocks.CountAsync(ct);
+        var stocks = await db.Stocks.AsNoTracking().OrderBy(x => x.ProductId).Skip((page - 1) * size).Take(size).Include(x => x.Reservations).ToListAsync(ct);
+        return new(stocks.Select(StockDto.From).ToArray(), page, size, total);
+    }
 }

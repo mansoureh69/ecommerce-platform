@@ -1,3 +1,4 @@
+using EcommercePlatform.BuildingBlocks.Application;
 using EcommercePlatform.BuildingBlocks.Infrastructure;
 using EcommercePlatform.Modules.Payments.Application;
 using EcommercePlatform.Modules.Payments.Domain;
@@ -29,4 +30,10 @@ internal sealed class PaymentStore(PaymentsDbContext db) : IPaymentStore
 {
     public Task<Payment?> Find(Guid orderId, CancellationToken ct) => db.Payments.SingleOrDefaultAsync(x => x.OrderId == orderId, ct);
     public void Add(Payment payment) => db.Payments.Add(payment);
+    public async Task<Page<AdminPaymentDto>> List(int page, int size, CancellationToken ct)
+    {
+        var total = await db.Payments.CountAsync(ct);
+        var payments = await db.Payments.AsNoTracking().OrderByDescending(x => x.SettledAt).ThenBy(x => x.Id).Skip((page - 1) * size).Take(size).ToListAsync(ct);
+        return new(payments.Select(AdminPaymentDto.From).ToArray(), page, size, total);
+    }
 }
