@@ -189,3 +189,46 @@ export interface RefundInput {
   orderId: Guid;
   reference: string;
 }
+
+export type OrderStatus =
+  | "PendingPayment"
+  | "Paid"
+  | "Shipped"
+  | "Delivered"
+  | "Cancelled"
+  | "Refunded";
+
+export interface PageQuery {
+  page?: number;
+  size?: number;
+}
+
+export interface AdminOrderQuery extends PageQuery {
+  status?: OrderStatus;
+}
+
+export interface StockReservation {
+  orderId: Guid;
+  quantity: number;
+  state: string;
+}
+
+export interface StockSummary {
+  productId: Guid;
+  available: number;
+  reserved: number;
+  consumed: number;
+  reservations: StockReservation[];
+}
+
+export interface AdminPayment {
+  id: Guid;
+  orderId: Guid;
+  amount: Money;
+  reference: string;
+  recordedBy: Guid;
+  settledAt: string;
+  refundReference: string | null;
+  refundedBy: Guid | null;
+  refundedAt: string | null;
+}

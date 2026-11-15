@@ -105,15 +105,20 @@ export function logoutHandler(request: NextRequest, options: SessionHandlerOptio
   return response;
 }
 
-export function sessionHandler(request: NextRequest, options: SessionHandlerOptions): NextResponse {
-  const token = request.cookies.get(options.cookieName)?.value;
-  const expiresAt = request.cookies.get(expiresCookieName(options.cookieName))?.value ?? null;
+// Roles come from the unverified JWT payload: fine for routing UX, never for authorization (the backend decides).
+export function readSession(get: (name: string) => string | undefined, cookieName: string): Session {
+  const token = get(cookieName);
+  const expiresAt = get(expiresCookieName(cookieName)) ?? null;
   const authenticated = Boolean(token && expiresAt && new Date(expiresAt).getTime() > Date.now());
-  return NextResponse.json({
+  return {
     authenticated,
     expiresAt: authenticated ? expiresAt : null,
     roles: authenticated && token ? decodeRoles(token) : [],
-  } satisfies Session);
+  };
+}
+
+export function sessionHandler(request: NextRequest, options: SessionHandlerOptions): NextResponse {
+  return NextResponse.json(readSession((name) => request.cookies.get(name)?.value, options.cookieName));
 }
 
 export async function backendProxy(

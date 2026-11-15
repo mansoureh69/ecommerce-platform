@@ -5,6 +5,8 @@ import { useLogin, useLogout } from "@ecommerce/ecommerce-hooks";
 import { Button, Field, Input } from "@ecommerce/ui-primitives";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { settled } from "../../components/safe";
+import { isAdmin } from "../../lib/auth";
 import { z } from "zod";
 
 const credentialsSchema = z.object({
@@ -23,8 +25,9 @@ export function LoginForm() {
   });
 
   async function submit(values: CredentialsForm) {
-    const session = await login.mutateAsync(values);
-    if (!session.roles.includes("Admin")) {
+    const session = await settled(login.mutateAsync(values));
+    if (!session) return;
+    if (!isAdmin(session)) {
       await logout.mutateAsync();
       form.setError("root", { message: "This account does not have administrator access." });
       return;

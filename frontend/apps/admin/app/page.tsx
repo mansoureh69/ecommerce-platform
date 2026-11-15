@@ -1,7 +1,7 @@
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { isAdmin } from "../lib/auth";
+import { currentSession } from "../lib/server-session";
 
 export default async function Home() {
-  const cookieStore = await cookies();
-  redirect(cookieStore.has("ecommerce_admin_session") ? "/dashboard" : "/login");
+  redirect(isAdmin(await currentSession()) ? "/dashboard" : "/login");
 }

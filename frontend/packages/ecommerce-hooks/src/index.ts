@@ -20,6 +20,7 @@ import {
 import { EcommerceProvider, useEcommerceClients } from "./provider";
 
 export { EcommerceProvider } from "./provider";
+export * from "./admin";
 
 export function useCategories() {
   const { api } = useEcommerceClients();
@@ -146,7 +147,10 @@ export function useCreateCategory() {
   return useMutation({
     mutationFn: (input: CategoryInput) => api.admin.createCategory(input),
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["categories"] }),
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["categories"] }),
+        queryClient.invalidateQueries({ queryKey: ["admin", "categories"] }),
+      ]),
   });
 }
 

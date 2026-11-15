@@ -1,5 +1,9 @@
 import type {
+  AdminOrderQuery,
+  AdminPayment,
   AdminProductQuery,
+  PageQuery,
+  StockSummary,
   Cart,
   Category,
   CategoryInput,
@@ -156,6 +160,19 @@ export class CommerceApi {
         method: "POST",
         body: { quantity },
       }),
+    orders: (query: AdminOrderQuery = {}) =>
+      this.http.request<Page<Order>>(`/admin/orders${queryString(query)}`),
+    order: (id: Guid) => this.http.request<Order>(`/admin/orders/${id}`),
+    cancelOrder: (id: Guid) =>
+      this.http.request<Order>(`/admin/orders/${id}/cancel`, { method: "POST" }),
+    payments: (query: PageQuery = {}) =>
+      this.http.request<Page<AdminPayment>>(`/admin/payments${queryString(query)}`),
+    paymentFor: (orderId: Guid) =>
+      this.http.request<AdminPayment>(`/admin/payments/${orderId}`),
+    stockList: (query: PageQuery = {}) =>
+      this.http.request<Page<StockSummary>>(`/admin/inventory${queryString(query)}`),
+    stockDetail: (productId: Guid) =>
+      this.http.request<StockSummary>(`/admin/inventory/${productId}`),
     shipOrder: (id: Guid) =>
       this.http.request<Order>(`/orders/${id}/ship`, { method: "POST" }),
     deliverOrder: (id: Guid) =>
